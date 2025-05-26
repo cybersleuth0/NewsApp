@@ -131,8 +131,9 @@ class _homepageState extends State<Homepage> {
               ],
             ),
             SizedBox(height: 20),
+            // Horizontal list of news articles.
             SizedBox(
-              height: 300,
+              height: 230,
               child: BlocBuilder<News_Bloc, News_States>(
                   builder: (context, state) {
                     if (state is News_Loading_States) {
@@ -142,10 +143,41 @@ class _homepageState extends State<Homepage> {
                       return Center(child: Text(state.error));
                     }
                     if (state is News_Success_States) {
+                      var snap = state.newsDataModel;
                       return ListView.builder(
-                          itemCount: state.sourceDataModel.articles.length,
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snap.articles.length,
                           itemBuilder: (_, index) {
-                            return Container();
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 10),
+                              child: Container(
+                                width: 320,
+                                decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                          "${snap.articles[index].urlToImage}",
+                                        ),
+                                        fit: BoxFit
+                                            .cover)
+                                ),
+                                child: Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      snap.articles[index].title ?? "No Title",
+                                      style: TextStyle(color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,),
+                                  ),
+                                ),
+                              ),
+                            );
                           }
                       );
                     }
@@ -153,6 +185,29 @@ class _homepageState extends State<Homepage> {
                   }
               ),
             ),
+            SizedBox(height: 20),
+            // Trending News section with "See all" link.
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Breaking News !",
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  "See all",
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    color: Colors.blueAccent,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
           ],
         ),
       ),

@@ -13,9 +13,9 @@ class News_Bloc extends Bloc<News_Events, News_States> {
     on<GetNews_Event>((event, emit) async {
       emit(News_Loading_States());
       var responseJson = await api_helper.getApi(url: Urls.getNewsURL);
-      var fromJson = SourceDataModel.fromJson(responseJson);
+      var fromJson = NewsDataModel.fromJson(responseJson);
       if (responseJson != null) {
-        emit(News_Success_States(sourceDataModel: fromJson));
+        emit(News_Success_States(newsDataModel: fromJson));
       } else {
         emit(News_Failure_States(error: "Something went wrong!"));
       }

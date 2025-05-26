@@ -1,4 +1,5 @@
-import 'package:news_api/models/models.dart';
+
+import '../models/models.dart';
 
 abstract class News_States {}
 
@@ -16,9 +17,9 @@ class News_Loading_States extends News_States {}
 // This state is typically used when the API call is successful
 // and news articles are available.
 class News_Success_States extends News_States {
-  SourceDataModel sourceDataModel;
+  NewsDataModel newsDataModel;
 
-  News_Success_States({required this.sourceDataModel});
+  News_Success_States({required this.newsDataModel});
 }
 
 // Represents a state where fetching news data has failed.
