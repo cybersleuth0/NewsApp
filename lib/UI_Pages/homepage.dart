@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:news_api/bloc/news_bloc.dart';
+import 'package:news_api/bloc/news_event.dart';
+import 'package:news_api/bloc/news_state.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -7,6 +11,12 @@ class Homepage extends StatefulWidget {
 }
 
 class _homepageState extends State<Homepage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<News_Bloc>().add(GetNews_Event());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,11 +133,24 @@ class _homepageState extends State<Homepage> {
             SizedBox(height: 20),
             SizedBox(
               height: 300,
-              child: ListView.builder(
-                itemCount: 1,
-                itemBuilder: (_, index) {
-                  return Container();
-                },
+              child: BlocBuilder<News_Bloc, News_States>(
+                  builder: (context, state) {
+                    if (state is News_Loading_States) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    if (state is News_Failure_States) {
+                      return Center(child: Text(state.error));
+                    }
+                    if (state is News_Success_States) {
+                      return ListView.builder(
+                          itemCount: state.sourceDataModel.articles.length,
+                          itemBuilder: (_, index) {
+                            return Container();
+                          }
+                      );
+                    }
+                    return Container();
+                  }
               ),
             ),
           ],
