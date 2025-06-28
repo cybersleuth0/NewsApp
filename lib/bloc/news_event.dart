@@ -1,3 +1,9 @@
-abstract class News_Events {}
+abstract class NewsEvents {}
 
-class GetNews_Event extends News_Events {}
+class GetCarouselNewsEvent extends NewsEvents {}
+
+class GetNewsByCategoryEvent extends NewsEvents {
+  final String category;
+
+  GetNewsByCategoryEvent({required this.category});
+}
