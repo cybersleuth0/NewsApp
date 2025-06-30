@@ -27,8 +27,25 @@ class News_Bloc extends Bloc<NewsEvents, News_States> {
       emit(News_Loading_States());
       String fetchcategoryUrl =
           "${Urls.getNewsByCategoryURL}category=${event.category}&apiKey=${Urls.apiKey}";
-      print("Url: $fetchcategoryUrl");
+      //print("Url: $fetchcategoryUrl");
       var responseJson = await api_helper.getApi(url: fetchcategoryUrl);
+      var fromJson = NewsDataModel.fromJson(responseJson);
+      if (responseJson != null) {
+        emit(News_Success_States(newsDataModel: fromJson));
+      } else {
+        emit(News_Failure_States(error: "Something went wrong!"));
+      }
+    });
+
+    ////Get News By Search
+    on<GetNewsBySearchEvent>((event, emit) async {
+      emit(News_Loading_States());
+      String fetchSearchUrl =
+          "${Urls.getNewsBySearchURL}q=${event.query}&sortBy=popularity&apiKey=${Urls.apiKey}";
+      //"q=Apple&&${Urls.apiKey}"
+
+      //print("Url: $fetchSearchUrl");
+      var responseJson = await api_helper.getApi(url: fetchSearchUrl);
       var fromJson = NewsDataModel.fromJson(responseJson);
       if (responseJson != null) {
         emit(News_Success_States(newsDataModel: fromJson));

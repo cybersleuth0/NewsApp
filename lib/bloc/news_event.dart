@@ -7,3 +7,9 @@ class GetNewsByCategoryEvent extends NewsEvents {
 
   GetNewsByCategoryEvent({required this.category});
 }
+
+class GetNewsBySearchEvent extends NewsEvents {
+  final String query;
+
+  GetNewsBySearchEvent({required this.query});
+}
