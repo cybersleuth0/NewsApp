@@ -7,6 +7,7 @@ import 'package:news_api/bloc/news_bloc.dart';
 import 'package:news_api/bloc/news_event.dart';
 import 'package:news_api/bloc/news_state.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -261,15 +262,35 @@ class _homepageState extends State<Homepage> {
               child: BlocBuilder<News_Bloc, News_States>(
                 builder: (context, state) {
                   if (state is News_Loading_States) {
-                    return Center(
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                            Colors.blueAccent,
+                    // Shimmer effect for loading state
+                    return CarouselSlider.builder(
+                      itemCount: 3, // Number of shimmer items
+                      itemBuilder: (
+                        BuildContext context,
+                        int itemIndex,
+                        int pageViewIndex,
+                      ) {
+                        return Shimmer.fromColors(
+                          baseColor: Colors.grey[700]!,
+                          highlightColor: Colors.grey[500]!,
+                          child: Container(
+                            width: MediaQuery.of(context).size.width < 600
+                                ? screenWidth * 0.8 // Mobile
+                                : screenWidth * 0.4, // Web
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
-                          strokeWidth: 5.0,
-                        ),
+                        );
+                      },
+                      options: CarouselOptions(
+                        height: MediaQuery.of(context).size.width < 600
+                            ? MediaQuery.of(context).size.height * 0.2 // Mobile
+                            : MediaQuery.of(context).size.height * 0.4, // Web
+                        enlargeCenterPage: true,
+                        autoPlay: false, // Disable autoplay during shimmer
                       ),
                     );
                   }
@@ -483,16 +504,27 @@ class _homepageState extends State<Homepage> {
             BlocBuilder<News_Bloc, News_States>(
               builder: (context, state) {
                 if (state is News_Loading_States) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 100.0),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Colors.blueAccent,
+                  // Shimmer effect for loading state in vertical list
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(), // Disable scroll during shimmer
+                    shrinkWrap: true,
+                    itemCount: 5, // Number of shimmer items
+                    itemBuilder: (context, index) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[700]!,
+                        highlightColor: Colors.grey[500]!,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Container(
+                            height: 120,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
                         ),
-                        strokeWidth: 5.0,
-                      ),
-                    ),
+                      );
+                    },
                   );
                 }
                 if (state is News_Failure_States) {
@@ -546,13 +578,18 @@ class _homepageState extends State<Homepage> {
                                     builder: (context, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return Center(
-                                          child: CircularProgressIndicator(
-                                            valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                  Colors.blueAccent,
-                                                ),
-                                            strokeWidth: 3.0,
+                                        return Shimmer.fromColors(
+                                          baseColor: Colors.grey[700]!,
+                                          highlightColor: Colors.grey[500]!,
+                                          child: Container(
+                                            height: 120,
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(15),
+                                                bottomLeft: Radius.circular(15),
+                                              ),
+                                            ),
                                           ),
                                         );
                                       }
