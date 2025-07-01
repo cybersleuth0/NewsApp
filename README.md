@@ -61,7 +61,6 @@ graph TD
 | `url_launcher`      | Open news articles in external browsers    | ^6.3.1     |
 | `shimmer`           | Loading skeletons for content placeholders | ^3.0.0     |
 | `cupertino_icons`   | iOS-style icons                            | ^1.0.8     |
-| `flutter_lints`     | Recommended linting rules                  | ^5.0.0     |
 
 ---
 
